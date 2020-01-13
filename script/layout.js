@@ -14,3 +14,12 @@ inputsWrapper.addEventListener('click', function(event) {
         clickEl.parentNode.className = '';
     }
 });
+
+document.querySelector('.show-btn-small-screen').addEventListener('click', (function() {
+    var isShowSideFilters = false;
+    return function() {
+        isShowSideFilters = !isShowSideFilters;
+        if(isShowSideFilters) inputsWrapper.style.left = '0';
+        else inputsWrapper.removeAttribute('style');
+    }})()
+);

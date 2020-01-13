@@ -94,7 +94,7 @@ h6 {
 
     .filter-section__filters {
         position: absolute;
-        /* left: -200px; */
+        left: -200px;
         top: 32px;
         transition: .3s;
         background-color: #d1a8a8;
