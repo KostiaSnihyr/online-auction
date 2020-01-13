@@ -6,7 +6,11 @@ inputsWrapper.addEventListener('click', function(event) {
         if(clickEl.checked) {
             clickEl.parentNode.querySelector('div').className = 'show__filters';
         }
+    } else if(clickEl.className === 'category__list') {
+        const checkbox = clickEl.querySelector('input');
+        checkbox.checked = !checkbox.checked;
+        if(checkbox.checked) clickEl.querySelector('div').className = 'show__filters';
     } else if(clickEl.className === 'close-subfilter') {
         clickEl.parentNode.className = '';
     }
-})
+});
