@@ -1,10 +1,18 @@
 const inputsWrapper = document.querySelector('.filter-section__filters');
 
+let filterObj = {};
+
 inputsWrapper.addEventListener('click', function(event) {
     const clickEl = event.target;
     if(clickEl.tagName === "INPUT" && clickEl.className === 'main__input') {
+        let dataFilter = clickEl.parentNode.getAttribute('data-filter');
+        let div = clickEl.parentNode.querySelector('div');
         if(clickEl.checked) {
-            clickEl.parentNode.querySelector('div').className = 'show__filters';
+            filterObj[dataFilter] = [];
+            div.className = 'show__filters';
+        } else {
+            checkboxesToFalse(div.querySelectorAll('input'));
+            delete filterObj[dataFilter];
         }
     } else if(clickEl.className === 'category__list') {
         const checkbox = clickEl.querySelector('input');
@@ -23,3 +31,9 @@ document.querySelector('.show-btn-small-screen').addEventListener('click', (func
         else inputsWrapper.removeAttribute('style');
     }})()
 );
+
+function checkboxesToFalse(arrCheckboxes) {
+    for (let i = 0; i < arrCheckboxes.length; i++) {
+        arrCheckboxes[i].checked = false;
+    }
+}
