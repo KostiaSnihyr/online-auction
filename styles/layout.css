@@ -1,0 +1,118 @@
+/* global */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 10px;
+}
+body {
+    font-size: 2rem;
+}
+
+li {
+    list-style: none;
+}
+
+h6 {
+    color: rgb(0, 81, 255);
+    background: black;
+}
+
+/* filter header */
+.filter-section__header {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(101, 161, 99);
+}
+
+.show-btn-small-screen {
+    display: none;
+}
+
+/* filter left menu filter and products */
+.filter-and-produts {
+    display: flex;
+}
+
+.filter-section__produts {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.category li h6, .category li ul {
+    background: rgb(203, 228, 187);
+    margin-left: 1rem;
+}
+
+@media screen and (max-width: 425px) {
+    .category__list > div {
+        position: absolute;
+        top: 0;
+        left: -200px;
+        padding: 10px;
+        width: 173px;
+        background: rgb(203, 228, 187);
+        transition: .5s;
+        box-sizing: border-box;
+    }
+    .category__list > .show__filters {
+        left: 0;
+        min-height: 100%;
+    }
+
+    .show-btn-small-screen {
+        display: block;
+        width: 40%;
+        border-radius: 4px;
+        margin: 0.3rem;
+        font-size: 2rem;
+        background-color: #222741;
+        border: none;
+        color: #0b0c11;
+        font-family: 'Open Sans', sans-serif;
+        color: white;
+    }
+
+    .items-on-the-page {
+        display: none;
+    }
+
+    .filter-section__header select {
+        width: 40%;
+        border-radius: 4px;
+        font-family: 'Open Sans', sans-serif;
+        margin: 0.3rem;
+    }
+
+    .filter-section__header h6, .items-on-the-page-select {
+        display: none;
+    }
+
+    .filter-section__filters {
+        position: absolute;
+        /* left: -200px; */
+        top: 32px;
+        transition: .3s;
+        background-color: #d1a8a8;
+    }
+}
+
+.sample {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.sub-sample {
+    background: blue;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 80%;
+    width: 80%;
+    display: block;
+}
