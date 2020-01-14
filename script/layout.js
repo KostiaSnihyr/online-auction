@@ -32,7 +32,9 @@ inputsWrapper.addEventListener('click', function(event) {
             delete filterObj[dataFilter];
         }
     } else if(clickEl.className === 'close-subfilter') {
-        clickEl.parentNode.className = '';
+        clickEl.parentNode.className = 'hide-filters';
+    } else if(clickEl.parentNode.className === 'close-subfilter') {
+        clickEl.parentNode.parentNode.className = 'hide-filters';
     }
 });
 
