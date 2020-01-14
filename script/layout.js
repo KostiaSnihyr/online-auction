@@ -32,6 +32,7 @@ inputsWrapper.addEventListener('click', function(event) {
                 filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
             }
         }
+        handleFilterProds(filterObj, prods);
     } else if(clickEl.className === 'category__list') {
         let dataFilter = clickEl.getAttribute('data-filter');
         const checkbox = clickEl.querySelector('input');
@@ -40,9 +41,11 @@ inputsWrapper.addEventListener('click', function(event) {
             filterObj[dataFilter] = {};
             clickEl.querySelector('div').className = 'show__filters';
         } else {
+            clickEl.querySelector('div').className = 'hide-filters';
             checkboxesToFalse(clickEl.querySelectorAll('div input'));
             delete filterObj[dataFilter];
         }
+        handleFilterProds(filterObj, prods);
     // close button
     } else if(clickEl.className === 'close-subfilter') {
         clickEl.parentNode.className = 'hide-filters';
@@ -71,12 +74,25 @@ function removeFromArr(el, arr) {
 }
 
 function handleFilterProds(filter, prods) {
-    let res = prods;
-    console.log(res);
+    let res = {};
+    let prodFilterCategory;
+    let isFilterWork = false;
 
+    for (let categoryElement in filter) {
+        isFilterWork = true;
+        prodFilterCategory = prods.filter(prod => categoryElement === prod.category);
+        prodFilterCategory.forEach(prod => { res[prod.id] = prod; });
+    }
+
+    if(!isFilterWork) {
+        for(let prod of prods) {
+            res[ prod.id ] = prod;
+        }
+    }
+    
     wrapperProducts.innerHTML = '';
-    for(let prod of res) {
-        wrapperProducts.appendChild(createProd(prod));
+    for(let prodId in res) {
+        wrapperProducts.appendChild(createProd(res[prodId]));
     }
 }
 
