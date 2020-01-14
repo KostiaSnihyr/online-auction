@@ -4,15 +4,21 @@ let filterObj = {};
 
 inputsWrapper.addEventListener('click', function(event) {
     const clickEl = event.target;
-    if(clickEl.tagName === "INPUT" && clickEl.className === 'main__input') {
-        let dataFilter = clickEl.parentNode.getAttribute('data-filter');
-        let div = clickEl.parentNode.querySelector('div');
-        if(clickEl.checked) {
-            filterObj[dataFilter] = [];
-            div.className = 'show__filters';
+    if(clickEl.tagName === "INPUT") {
+        if(clickEl.className === 'main__input') {
+            let dataFilter = clickEl.parentNode.getAttribute('data-filter');
+            let div = clickEl.parentNode.querySelector('div');
+            if(clickEl.checked) {
+                filterObj[dataFilter] = [];
+                div.className = 'show__filters';
+            } else {
+                checkboxesToFalse(div.querySelectorAll('input'));
+                delete filterObj[dataFilter];
+            }
         } else {
-            checkboxesToFalse(div.querySelectorAll('input'));
-            delete filterObj[dataFilter];
+            // click input/label subfilter
+            let dataFilter = clickEl.parentNode.parentNode.parentNode.parentNode.getAttribute('data-filter');
+            filterObj[dataFilter].push(clickEl.getAttribute('data-filter'));
         }
     } else if(clickEl.className === 'category__list') {
         let dataFilter = clickEl.getAttribute('data-filter');
