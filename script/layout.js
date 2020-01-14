@@ -9,7 +9,7 @@ inputsWrapper.addEventListener('click', function(event) {
             let dataFilter = clickEl.parentNode.getAttribute('data-filter');
             let div = clickEl.parentNode.querySelector('div');
             if(clickEl.checked) {
-                filterObj[dataFilter] = [];
+                filterObj[dataFilter] = {};
                 div.className = 'show__filters';
             } else {
                 checkboxesToFalse(div.querySelectorAll('input'));
@@ -17,8 +17,13 @@ inputsWrapper.addEventListener('click', function(event) {
             }
         } else {
             // click input/label subfilter
-            let dataFilter = clickEl.parentNode.parentNode.parentNode.parentNode.getAttribute('data-filter');
-            filterObj[dataFilter].push(clickEl.getAttribute('data-filter'));
+            let dataFilter = clickEl.parentNode.parentNode.parentNode.parentNode.getAttribute('data-filter'); //sneakers /tshirts
+            let groupFilter = clickEl.parentNode.parentNode.getAttribute('data-group'); // brand/ size
+            let nameFilter = clickEl.getAttribute('data-filter'); //nike/puma
+            if(clickEl.checked) {
+                if(groupFilter in filterObj[dataFilter]) filterObj[dataFilter][groupFilter].push(nameFilter);
+                else filterObj[dataFilter][groupFilter] = [nameFilter];
+            }
         }
     } else if(clickEl.className === 'category__list') {
         let dataFilter = clickEl.getAttribute('data-filter');
@@ -31,6 +36,7 @@ inputsWrapper.addEventListener('click', function(event) {
             checkboxesToFalse(clickEl.querySelectorAll('div input'));
             delete filterObj[dataFilter];
         }
+    // close button
     } else if(clickEl.className === 'close-subfilter') {
         clickEl.parentNode.className = 'hide-filters';
     } else if(clickEl.parentNode.className === 'close-subfilter') {
