@@ -23,6 +23,8 @@ inputsWrapper.addEventListener('click', function(event) {
             if(clickEl.checked) {
                 if(groupFilter in filterObj[dataFilter]) filterObj[dataFilter][groupFilter].push(nameFilter);
                 else filterObj[dataFilter][groupFilter] = [nameFilter];
+            } else {
+                filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
             }
         }
     } else if(clickEl.className === 'category__list') {
@@ -58,3 +60,7 @@ document.querySelector('.show-btn-small-screen').addEventListener('click', (func
         else inputsWrapper.removeAttribute('style');
     }})()
 );
+
+function removeFromArr(el, arr) {
+    return arr.filter(a => a !== el);
+}
