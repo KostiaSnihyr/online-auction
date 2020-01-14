@@ -1,5 +1,9 @@
 const inputsWrapper = document.querySelector('.filter-section__filters');
+const wrapperProducts = document.querySelector('.filter-section__produts');
+
 let filterObj = {};
+
+handleFilterProds(filterObj, prods);
 
 inputsWrapper.addEventListener('click', function(event) {
     const clickEl = event.target;
@@ -64,4 +68,37 @@ document.querySelector('.show-btn-small-screen').addEventListener('click', (func
 
 function removeFromArr(el, arr) {
     return arr.filter(a => a !== el);
+}
+
+function handleFilterProds(filter, prods) {
+    let res = prods;
+    console.log(res);
+
+    wrapperProducts.innerHTML = '';
+    for(let prod of res) {
+        wrapperProducts.appendChild(createProd(prod));
+    }
+}
+
+function createProd(prod) {
+    const prodWrapper = document.createElement('div');
+    const img = document.createElement('img');
+    const description = document.createElement('p');
+    const title = document.createElement('h3');
+
+    prodWrapper.className = 'product';
+    img.className = 'product-img';
+
+    img.setAttribute('src', prod.image);
+    description.innerText = `price: ${prod.price}, color: ${prod.color}`;
+    if('size' in prod) {
+        description.innerText += `, size ${prod.size}`;
+    }
+    title.innerText = prod.title;
+
+    prodWrapper.appendChild(img);
+    prodWrapper.appendChild(title);
+    prodWrapper.appendChild(description);
+
+    return prodWrapper;
 }
