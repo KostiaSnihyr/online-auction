@@ -1,5 +1,4 @@
 const inputsWrapper = document.querySelector('.filter-section__filters');
-
 let filterObj = {};
 
 inputsWrapper.addEventListener('click', function(event) {
@@ -14,6 +13,8 @@ inputsWrapper.addEventListener('click', function(event) {
             } else {
                 checkboxesToFalse(div.querySelectorAll('input'));
                 delete filterObj[dataFilter];
+                const hideFilters = clickEl.parentNode.querySelector('.show__filters');
+                if(hideFilters) hideFilters.className = 'hide-filters';
             }
         } else {
             // click input/label subfilter
@@ -32,7 +33,7 @@ inputsWrapper.addEventListener('click', function(event) {
         const checkbox = clickEl.querySelector('input');
         checkbox.checked = !checkbox.checked;
         if(checkbox.checked) {
-            filterObj[dataFilter] = [];
+            filterObj[dataFilter] = {};
             clickEl.querySelector('div').className = 'show__filters';
         } else {
             checkboxesToFalse(clickEl.querySelectorAll('div input'));

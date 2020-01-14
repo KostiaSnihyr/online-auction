@@ -48,6 +48,7 @@ h6 {
     margin-left: 1rem;
 }
 
+
 @media screen and (max-width: 425px) {
     .category__list > div {
         position: absolute;
@@ -115,4 +116,13 @@ h6 {
     height: 80%;
     width: 80%;
     display: block;
+}
+
+@media screen and (min-width: 426px) {
+    .close-subfilter {
+        display: none;
+    }
+    .hide-filters {
+        display: none;
+    }
 }
