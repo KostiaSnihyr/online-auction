@@ -75,21 +75,32 @@ function removeFromArr(el, arr) {
 
 function handleFilterProds(filter, prods) {
     let res = {};
-    let prodFilterCategory;
-    let isFilterWork = false;
+    isFilterWork = false;
 
-    for (let categoryElement in filter) {
+    // filter by category
+    for(let categoryElement in filter) {
         isFilterWork = true;
-        prodFilterCategory = prods.filter(prod => categoryElement === prod.category);
-        prodFilterCategory.forEach(prod => { res[prod.id] = prod; });
+        prodFilterCategory = prods.filter(prod => {
+            return categoryElement === prod.category;
+        });
+
+        // filter by subcategory
+        for(let subFilterProp in filter[categoryElement]) {
+            let arrSubFilters = filter[categoryElement][subFilterProp];
+            prodFilterCategory = prodFilterCategory.filter(prod => {
+                return arrSubFilters.includes(prod[subFilterProp]);
+            })
+        }
+
+        prodFilterCategory.forEach(prod => res[prod.id] = prod );
     }
 
     if(!isFilterWork) {
         for(let prod of prods) {
-            res[ prod.id ] = prod;
+            res[prod.id] = prod;
         }
     }
-    
+
     wrapperProducts.innerHTML = '';
     for(let prodId in res) {
         wrapperProducts.appendChild(createProd(res[prodId]));
@@ -118,3 +129,10 @@ function createProd(prod) {
 
     return prodWrapper;
 }
+
+let arr = [1,2,3,4,6,7,8,9,10];
+let arr1 = [5,10];
+
+arr1 = arr1.filter(e => {
+    return arr.includes(e)
+});
