@@ -1,7 +1,7 @@
 const inputsWrapper = document.querySelector('.filter-section__filters');
 const wrapperProducts = document.querySelector('.filter-section__produts');
 
-let filterObj = {};
+let filterObj = { 'globalFilter': {} };
 
 handleFilterProds(filterObj, prods);
 
@@ -75,24 +75,20 @@ function removeFromArr(el, arr) {
 
 function handleFilterProds(filter, prods) {
     let res = {};
-    isFilterWork = false;
+    let prodFilterCategory;
+    let isFilterWork = false;
 
     // filter by category
     for(let categoryElement in filter) {
-        isFilterWork = true;
-        prodFilterCategory = prods.filter(prod => {
-            return categoryElement === prod.category;
-        });
-
-        // filter by subcategory
-        for(let subFilterProp in filter[categoryElement]) {
-            let arrSubFilters = filter[categoryElement][subFilterProp];
-            prodFilterCategory = prodFilterCategory.filter(prod => {
-                return arrSubFilters.includes(prod[subFilterProp]);
-            })
+        if(categoryElement !== 'globalFilter') {
+            isFilterWork = true;
+            prodFilterCategory = prods.filter(prod => {
+                return categoryElement === prod.category;
+            });
+    
+            // filter by subcategory
+            subFilters(filter[categoryElement], prodFilterCategory, res);
         }
-
-        prodFilterCategory.forEach(prod => res[prod.id] = prod );
     }
 
     if(!isFilterWork) {
@@ -104,6 +100,18 @@ function handleFilterProds(filter, prods) {
     wrapperProducts.innerHTML = '';
     for(let prodId in res) {
         wrapperProducts.appendChild(createProd(res[prodId]));
+    }
+
+    function subFilters(objSubFilters, prodFilterCategory, res) {
+        for(let subFilterProp in objSubFilters) {
+            let arrSubFilters = objSubFilters[subFilterProp];
+            prodFilterCategory = prodFilterCategory.filter(prod => {
+                return arrSubFilters.includes(prod[subFilterProp]);
+            })
+        }
+
+        prodFilterCategory.forEach(prod => res[prod.id] = prod );
+        return res;
     }
 }
 
@@ -129,10 +137,3 @@ function createProd(prod) {
 
     return prodWrapper;
 }
-
-let arr = [1,2,3,4,6,7,8,9,10];
-let arr1 = [5,10];
-
-arr1 = arr1.filter(e => {
-    return arr.includes(e)
-});
