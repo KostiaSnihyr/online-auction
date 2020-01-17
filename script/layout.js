@@ -20,6 +20,18 @@ inputsWrapper.addEventListener('click', function(event) {
                 const hideFilters = clickEl.parentNode.querySelector('.show__filters');
                 if(hideFilters) hideFilters.className = 'hide-filters';
             }
+        } else if(clickEl.parentNode.classList.contains('global-filter')) {
+            // input global filters
+            let nameFilter = clickEl.getAttribute('data-filter'); //red / male
+            let groupFilter = clickEl.parentNode.parentNode.getAttribute('data-group'); // colors / gender
+
+            if(clickEl.checked) {
+                if(groupFilter in filterObj['globalFilter']) filterObj['globalFilter'][groupFilter].push(nameFilter);
+                else filterObj['globalFilter'][groupFilter] = [nameFilter];
+            } else {
+                filterObj['globalFilter'][groupFilter] = removeFromArr(nameFilter, filterObj['globalFilter'][groupFilter]);
+            }
+            handleFilterProds(filterObj, prods);
         } else {
             // click input/label subfilter
             let dataFilter = clickEl.parentNode.parentNode.parentNode.parentNode.getAttribute('data-filter'); //sneakers /tshirts
@@ -33,6 +45,38 @@ inputsWrapper.addEventListener('click', function(event) {
             }
         }
         handleFilterProds(filterObj, prods);
+    } else if(clickEl.classList.contains('global-filter')) {
+        // li global
+        let input = clickEl.querySelector('input');
+        let nameFilter = input.getAttribute('data-filter'); //red / male
+        let groupFilter = clickEl.parentNode.getAttribute('data-group'); // colors / gender
+
+        input.checked = !input.checked;
+
+        if(input.checked) {
+            if(groupFilter in filterObj['globalFilter']) filterObj['globalFilter'][groupFilter].push(nameFilter);
+            else filterObj['globalFilter'][groupFilter] = [nameFilter];
+        } else {
+            filterObj['globalFilter'][groupFilter] = removeFromArr(nameFilter, filterObj['globalFilter'][groupFilter]);
+        }
+        handleFilterProds(filterObj, prods);
+    } else if(clickEl.classList.contains('submain-input')) {
+        // li subcategory
+        let input = clickEl.querySelector('input');
+            input.checked = !input.checked;
+
+        let dataFilter = clickEl.parentNode.parentNode.parentNode.getAttribute('data-filter'); //sneakers /tshirts
+        let groupFilter = clickEl.parentNode.getAttribute('data-group'); // brand/ size
+        let nameFilter = input.getAttribute('data-filter'); //reebok/ adidas
+
+        if(input.checked) {
+            if(groupFilter in filterObj[dataFilter]) filterObj[dataFilter][groupFilter].push(nameFilter);
+            else filterObj[dataFilter][groupFilter] = [nameFilter];
+        } else {
+            filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
+        }
+        handleFilterProds(filterObj, prods);
+        
     } else if(clickEl.className === 'category__list') {
         let dataFilter = clickEl.getAttribute('data-filter');
         const checkbox = clickEl.querySelector('input');
@@ -85,9 +129,11 @@ function handleFilterProds(filter, prods) {
             prodFilterCategory = prods.filter(prod => {
                 return categoryElement === prod.category;
             });
+            console.log(prodFilterCategory);
     
             // filter by subcategory
-            subFilters(filter[categoryElement], prodFilterCategory, res);
+            console.log(subFilters(filter[categoryElement], prodFilterCategory, res));
+            res = subFilters(filter[categoryElement], prodFilterCategory, res);
         }
     }
 
@@ -96,6 +142,12 @@ function handleFilterProds(filter, prods) {
             res[prod.id] = prod;
         }
     }
+    
+    prodFilterCategory = [];
+    for(let prodId in res) {
+        prodFilterCategory.push( res[prodId] ); // res[prodId] - товар
+    }
+    res = subFilters(filter['globalFilter'], prodFilterCategory, {});
 
     wrapperProducts.innerHTML = '';
     for(let prodId in res) {
