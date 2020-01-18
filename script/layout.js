@@ -1,13 +1,32 @@
 const inputsWrapper = document.querySelector('.filter-section__filters');
 const wrapperProducts = document.querySelector('.filter-section__produts');
 
-let filterObj = { 'globalFilter': {} };
+const selectSort = document.querySelector('.js-select-sort');
+const optionsSort = selectSort.querySelectorAll('option');
 
-handleFilterProds(filterObj, prods);
+const inputsPrice = inputsWrapper.querySelectorAll('.js-price');
+
+let filterObj = { 'globalFilter': {} };
+let filterPrice = {};
+let sortPaginationObj = { sortProp: 'price', k: '1' };
+
+for(let input of inputsPrice) {
+    input.addEventListener('input', function() {
+        let typeOfPrice = this.getAttribute('data-filter'); //min / max
+        let price = parseFloat(this.value);
+
+        if(!isNaN(price)) filterPrice[typeOfPrice] = price;
+        else delete filterPrice[typeOfPrice];
+
+        handleFilterProds(filterObj, prods, filterPrice);
+    })
+}
+
+handleFilterProds(filterObj, prods, filterPrice);
 
 inputsWrapper.addEventListener('click', function(event) {
     const clickEl = event.target;
-    if(clickEl.tagName === "INPUT") {
+    if(clickEl.tagName === "INPUT" && clickEl.type === 'checkbox') {
         if(clickEl.className === 'main__input') {
             let dataFilter = clickEl.parentNode.getAttribute('data-filter');
             let div = clickEl.parentNode.querySelector('div');
@@ -31,7 +50,7 @@ inputsWrapper.addEventListener('click', function(event) {
             } else {
                 filterObj['globalFilter'][groupFilter] = removeFromArr(nameFilter, filterObj['globalFilter'][groupFilter]);
             }
-            handleFilterProds(filterObj, prods);
+            handleFilterProds(filterObj, prods, filterPrice);
         } else {
             // click input/label subfilter
             let dataFilter = clickEl.parentNode.parentNode.parentNode.parentNode.getAttribute('data-filter'); //sneakers /tshirts
@@ -44,9 +63,9 @@ inputsWrapper.addEventListener('click', function(event) {
                 filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
             }
         }
-        handleFilterProds(filterObj, prods);
+        handleFilterProds(filterObj, prods, filterPrice);
     } else if(clickEl.classList.contains('global-filter')) {
-        // li global
+        // li global filters
         let input = clickEl.querySelector('input');
         let nameFilter = input.getAttribute('data-filter'); //red / male
         let groupFilter = clickEl.parentNode.getAttribute('data-group'); // colors / gender
@@ -59,24 +78,18 @@ inputsWrapper.addEventListener('click', function(event) {
         } else {
             filterObj['globalFilter'][groupFilter] = removeFromArr(nameFilter, filterObj['globalFilter'][groupFilter]);
         }
-        handleFilterProds(filterObj, prods);
+        handleFilterProds(filterObj, prods, filterPrice);
     } else if(clickEl.classList.contains('submain-input')) {
-        // li subcategory
+    // click subcategory list
         let input = clickEl.querySelector('input');
             input.checked = !input.checked;
 
+        // when we press the li-subfilters
         let dataFilter = clickEl.parentNode.parentNode.parentNode.getAttribute('data-filter'); //sneakers /tshirts
         let groupFilter = clickEl.parentNode.getAttribute('data-group'); // brand/ size
         let nameFilter = input.getAttribute('data-filter'); //reebok/ adidas
 
-        if(input.checked) {
-            if(groupFilter in filterObj[dataFilter]) filterObj[dataFilter][groupFilter].push(nameFilter);
-            else filterObj[dataFilter][groupFilter] = [nameFilter];
-        } else {
-            filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
-        }
-        handleFilterProds(filterObj, prods);
-        
+        clickSubFilter(input, dataFilter, groupFilter, nameFilter);
     } else if(clickEl.className === 'category__list') {
         let dataFilter = clickEl.getAttribute('data-filter');
         const checkbox = clickEl.querySelector('input');
@@ -89,7 +102,7 @@ inputsWrapper.addEventListener('click', function(event) {
             checkboxesToFalse(clickEl.querySelectorAll('div input'));
             delete filterObj[dataFilter];
         }
-        handleFilterProds(filterObj, prods);
+        handleFilterProds(filterObj, prods, filterPrice);
     // close button
     } else if(clickEl.className === 'close-subfilter') {
         clickEl.parentNode.className = 'hide-filters';
@@ -117,7 +130,7 @@ function removeFromArr(el, arr) {
     return arr.filter(a => a !== el);
 }
 
-function handleFilterProds(filter, prods) {
+function handleFilterProds(filter, prods, filterPrice) {
     let res = {};
     let prodFilterCategory;
     let isFilterWork = false;
@@ -129,10 +142,8 @@ function handleFilterProds(filter, prods) {
             prodFilterCategory = prods.filter(prod => {
                 return categoryElement === prod.category;
             });
-            console.log(prodFilterCategory);
     
             // filter by subcategory
-            console.log(subFilters(filter[categoryElement], prodFilterCategory, res));
             res = subFilters(filter[categoryElement], prodFilterCategory, res);
         }
     }
@@ -142,6 +153,29 @@ function handleFilterProds(filter, prods) {
             res[prod.id] = prod;
         }
     }
+
+    // <price filter
+    for(let typePrice in filterPrice) {
+        const price = filterPrice[typePrice];
+        
+        let tempRes = {}; // save here filtered goods by price
+        if(typePrice === 'min') {
+            for(let id in res) {
+                if(res[id].price >= price) {
+                    tempRes[id] = res[id];
+                }
+            }
+        } else {
+            for(let id in res) {
+                if(res[id].price <= price) {
+                    tempRes[id] = res[id];
+                }
+            }
+        }
+
+        res = tempRes;
+    }
+    //</price filter
     
     prodFilterCategory = [];
     for(let prodId in res) {

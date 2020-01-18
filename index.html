@@ -14,12 +14,10 @@
 
         <div class="filter-section__header">
             <button class="show-btn-small-screen">filters <i class="fas fa-filter"></i></button>
-            <select name="price">
-                <option value="low to heihgt">price: low to heihgt</option>
-                <option value="heihgt to low">price: heihgt to low</option>
-                <option value="most popular">most popular</option>
-                <option value="newest">newest</option>
-                <option value="highest rank">highest rank</option>
+            <select name="price" class="js-select-sort">
+                <option value="price_1">price: low to heihgt</option>
+                <option value="price_-1">price: heihgt to low</option>
+                <option value="rank_1">highest rank</option>
             </select>
             <h6>items on the page:</h6>
             <select class="items-on-the-page-select" name="items-number">
@@ -136,11 +134,11 @@
                     <div>
                         <label for="price-from">min price $</label>
                         <br>
-                        <input type="text" id="price-from">
+                        <input type="text" id="price-from" data-filter="min" class="js-price">
                         <br>
                         <label for="price-to">max price $</label>
                         <br>
-                        <input type="text" id="price-to">
+                        <input type="text" id="price-to" data-filter="max" class="js-price">
                     </div>
                 </div>
 
