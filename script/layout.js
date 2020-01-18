@@ -19,7 +19,7 @@ for(let input of inputsPrice) {
         else delete filterPrice[typeOfPrice];
 
         handleFilterProds(filterObj, prods, filterPrice);
-    })
+    });
 }
 
 handleFilterProds(filterObj, prods, filterPrice);
@@ -191,9 +191,11 @@ function handleFilterProds(filter, prods, filterPrice) {
     function subFilters(objSubFilters, prodFilterCategory, res) {
         for(let subFilterProp in objSubFilters) {
             let arrSubFilters = objSubFilters[subFilterProp];
-            prodFilterCategory = prodFilterCategory.filter(prod => {
-                return arrSubFilters.includes(prod[subFilterProp]);
-            })
+            if(arrSubFilters.length !== 0) {
+                prodFilterCategory = prodFilterCategory.filter(prod => {
+                    return arrSubFilters.includes(prod[subFilterProp]);
+                })
+            }
         }
 
         prodFilterCategory.forEach(prod => res[prod.id] = prod );
@@ -222,4 +224,14 @@ function createProd(prod) {
     prodWrapper.appendChild(description);
 
     return prodWrapper;
+}
+
+function clickSubFilter(input, dataFilter, groupFilter, nameFilter) {
+    if(input.checked) {
+        if(groupFilter in filterObj[dataFilter]) filterObj[dataFilter][groupFilter].push(nameFilter);
+        else filterObj[dataFilter][groupFilter] = [nameFilter];
+    } else {
+        filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
+    }
+    handleFilterProds(filterObj, prods, filterPrice);
 }
