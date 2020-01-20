@@ -8,7 +8,7 @@ const inputsPrice = inputsWrapper.querySelectorAll('.js-price');
 
 let filterObj = { 'globalFilter': {} };
 let filterPrice = {};
-let sortPaginationObj = { sortProp: 'price', k: '1' };
+let sortPaginationObj = { sortProp: '', k: '' };
 
 for(let input of inputsPrice) {
     input.addEventListener('input', function() {
@@ -30,7 +30,7 @@ selectSort.addEventListener('change', function() {
     sortPaginationObj.k = arrSelectValue[1];
 
     handleFilterProds(filterObj, prods, filterPrice);
-})
+});
 
 inputsWrapper.addEventListener('click', function(event) {
     const clickEl = event.target;
