@@ -24,6 +24,14 @@ for(let input of inputsPrice) {
 
 handleFilterProds(filterObj, prods, filterPrice);
 
+selectSort.addEventListener('change', function() {
+    let arrSelectValue = optionsSort[this.selectedIndex].value.split('_');
+    sortPaginationObj.sortProp = arrSelectValue[0];
+    sortPaginationObj.k = arrSelectValue[1];
+
+    handleFilterProds(filterObj, prods, filterPrice);
+})
+
 inputsWrapper.addEventListener('click', function(event) {
     const clickEl = event.target;
     if(clickEl.tagName === "INPUT" && clickEl.type === 'checkbox') {
@@ -175,13 +183,26 @@ function handleFilterProds(filter, prods, filterPrice) {
 
         res = tempRes;
     }
-    //</price filter
-    
+    // </price filter
+
+    // <global filter
     prodFilterCategory = [];
     for(let prodId in res) {
-        prodFilterCategory.push( res[prodId] ); // res[prodId] - товар
+        prodFilterCategory.push( res[prodId] ); // res[prodId] - item
     }
     res = subFilters(filter['globalFilter'], prodFilterCategory, {});
+    // </global filter
+    
+    // <order filter
+    let allResultProds = [];
+    for(let id in res) allResultProds.push(res[id]);
+
+    allResultProds.sort(function(a, b) {
+        return sortPaginationObj.k * (a[ sortPaginationObj.sortProp ] - b[ sortPaginationObj.sortProp ]);
+    });
+
+    res = allResultProds;
+    // </order filter
 
     wrapperProducts.innerHTML = '';
     for(let prodId in res) {
