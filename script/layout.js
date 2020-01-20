@@ -6,9 +6,15 @@ const optionsSort = selectSort.querySelectorAll('option');
 
 const inputsPrice = inputsWrapper.querySelectorAll('.js-price');
 
+// <pagination
+const containerPagination = document.querySelector('.js-pagination');
+const selectPagination = document.querySelector('.js-select-pagination');
+const optionsPagination = selectPagination.querySelectorAll('option');
+// </pagination
+
 let filterObj = { 'globalFilter': {} };
 let filterPrice = {};
-let sortPaginationObj = { sortProp: '', k: '' };
+let sortPaginationObj = { sortProp: '', k: '', onPage: 0, curPage: 0 };
 
 for(let input of inputsPrice) {
     input.addEventListener('input', function() {
@@ -23,6 +29,15 @@ for(let input of inputsPrice) {
 }
 
 handleFilterProds(filterObj, prods, filterPrice);
+
+// <pagination
+selectPagination.addEventListener('change', function() {
+    let prodOnPage = selectPagination[this.selectedIndex].value; //how many items on the page
+    sortPaginationObj.onPage = prodOnPage;
+
+    handleFilterProds(filterObj, prods, filterPrice);
+})
+// </pagination
 
 selectSort.addEventListener('change', function() {
     let arrSelectValue = optionsSort[this.selectedIndex].value.split('_');
@@ -205,8 +220,13 @@ function handleFilterProds(filter, prods, filterPrice) {
     // </order filter
 
     wrapperProducts.innerHTML = '';
-    for(let prodId in res) {
-        wrapperProducts.appendChild(createProd(res[prodId]));
+
+    const maxProduct = res.length;
+    let maxOnCurPage = sortPaginationObj.onPage * (sortPaginationObj.curPage + 1);
+    maxOnCurPage = maxOnCurPage === 0 ? maxProduct : maxOnCurPage;
+
+    for(let i = sortPaginationObj.onPage * sortPaginationObj.curPage; i < maxProduct && i < maxOnCurPage; i++) {
+        wrapperProducts.appendChild(createProd( res[i] ));
     }
 
     function subFilters(objSubFilters, prodFilterCategory, res) {

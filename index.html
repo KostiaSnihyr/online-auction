@@ -14,6 +14,7 @@
 
         <div class="filter-section__header">
             <button class="show-btn-small-screen">filters <i class="fas fa-filter"></i></button>
+            <h6>sort products:</h6>
             <select name="price" class="js-select-sort">
                 <option value="" disabled selected>choose sort:</option>
                 <option value="price_1">price: low to heihgt</option>
@@ -21,10 +22,11 @@
                 <option value="rank_-1">highest rank</option>
             </select>
             <h6>items on the page:</h6>
-            <select class="items-on-the-page-select" name="items-number">
+            <select class="items-on-the-page-select js-select-pagination" name="items-number">
+                <option value="" disabled selected>items on the page:</option>
+                <option value="2">2</option>
+                <option value="5">5</option>
                 <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
             </select>
 
 
@@ -162,19 +164,9 @@
 
             <!-- ___________________________________________________________________________________________ -->
 
-            <div class="filter-section__produts" style="background: rgb(88, 88, 218); align-content: flex-start;">
+            <div class="filter-section__produts" style="background: rgb(88, 88, 218); align-content: flex-start;"></div>
 
-                <!-- <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div>
-                <div style="background: grey; width: 115px; height: 115px; margin: 5px"></div> -->
-            </div>
+            <div class="pagination js-pagination"></div>
 
         </div>
 
