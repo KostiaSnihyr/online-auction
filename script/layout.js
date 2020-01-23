@@ -14,7 +14,7 @@ const optionsPagination = selectPagination.querySelectorAll('option');
 
 let filterObj = { 'globalFilter': {} };
 let filterPrice = {};
-let sortPaginationObj = { sortProp: '', k: '', onPage: 0, curPage: 0 };
+let sortPaginationObj = { sortProp: '', k: '', onPage: 2, curPage: 0 };
 
 for(let input of inputsPrice) {
     input.addEventListener('input', function() {
@@ -211,23 +211,11 @@ function handleFilterProds(filter, prods, filterPrice) {
     // <order filter
     let allResultProds = [];
     for(let id in res) allResultProds.push(res[id]);
-
-    allResultProds.sort(function(a, b) {
-        return sortPaginationObj.k * (a[ sortPaginationObj.sortProp ] - b[ sortPaginationObj.sortProp ]);
-    });
+    
+    handleSort(allResultProds);
 
     res = allResultProds;
     // </order filter
-
-    wrapperProducts.innerHTML = '';
-
-    const maxProduct = res.length;
-    let maxOnCurPage = sortPaginationObj.onPage * (sortPaginationObj.curPage + 1);
-    maxOnCurPage = maxOnCurPage === 0 ? maxProduct : maxOnCurPage;
-
-    for(let i = sortPaginationObj.onPage * sortPaginationObj.curPage; i < maxProduct && i < maxOnCurPage; i++) {
-        wrapperProducts.appendChild(createProd( res[i] ));
-    }
 
     function subFilters(objSubFilters, prodFilterCategory, res) {
         for(let subFilterProp in objSubFilters) {
@@ -241,6 +229,29 @@ function handleFilterProds(filter, prods, filterPrice) {
 
         prodFilterCategory.forEach(prod => res[prod.id] = prod );
         return res;
+    }
+    console.log(sortPaginationObj.onPage);
+    createPagination(containerPagination, prods.length);
+
+    showProducts(wrapperProducts, res);
+
+}
+
+function handleSort(prods) {
+    if(sortPaginationObj.sortProp) prods.sort( (a, b) => +sortPaginationObj.k * (+a[ sortPaginationObj.sortProp ] - +b[ sortPaginationObj.sortProp ]) );
+    //return sorted array of objects
+    return prods;
+}
+
+function showProducts(containerProducts, prods) {
+    containerProducts.innerHTML = '';
+
+    const maxProduct = prods.length;
+    let maxOnCurPage = sortPaginationObj.onPage * (sortPaginationObj.curPage + 1);
+    maxOnCurPage = maxOnCurPage === 0 ? maxProduct : maxOnCurPage;
+
+    for(let i = sortPaginationObj.onPage * sortPaginationObj.curPage; i < maxProduct && i < maxOnCurPage; i++) {
+        containerProducts.appendChild(createProd( prods[i] ));
     }
 }
 
@@ -275,4 +286,20 @@ function clickSubFilter(input, dataFilter, groupFilter, nameFilter) {
         filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
     }
     handleFilterProds(filterObj, prods, filterPrice);
+}
+
+function createPagination(container, qtyProds) {
+    let link;
+    qtyProds = Math.ceil(qtyProds / sortPaginationObj.onPage); // how many pages
+    sortPaginationObj.curPage = 0;
+
+    container.innerHTML = '';
+    for(let i = 0; i < qtyProds; i++) {
+        link = document.createElement('button');
+        link.innerText = i + 1;
+        link.setAttribute('data-page', i);
+        if(i === 0) link.className = 'active';
+
+        container.appendChild(link);
+    }
 }
