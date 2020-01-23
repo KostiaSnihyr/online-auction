@@ -140,3 +140,7 @@ h6 {
         display: none;
     }
 }
+
+.js-pagination .active {
+    color: red;
+}

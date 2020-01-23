@@ -31,12 +31,24 @@ for(let input of inputsPrice) {
 handleFilterProds(filterObj, prods, filterPrice);
 
 // <pagination
+containerPagination.addEventListener('click', function(e) {
+    const el = e.target;
+
+    if(el.tagName === 'BUTTON') {
+        sortPaginationObj.curPage = +el.getAttribute('data-page');
+        
+        let oldActive = this.querySelector('.active');
+        if(oldActive) oldActive.className = '';
+        el.className = 'active';
+    }
+});
+
 selectPagination.addEventListener('change', function() {
     let prodOnPage = selectPagination[this.selectedIndex].value; //how many items on the page
     sortPaginationObj.onPage = prodOnPage;
 
     handleFilterProds(filterObj, prods, filterPrice);
-})
+});
 // </pagination
 
 selectSort.addEventListener('change', function() {
@@ -44,7 +56,7 @@ selectSort.addEventListener('change', function() {
     sortPaginationObj.sortProp = arrSelectValue[0];
     sortPaginationObj.k = arrSelectValue[1];
 
-    handleFilterProds(filterObj, prods, filterPrice);
+    resultProds = handleFilterProds(filterObj, prods, filterPrice);
 });
 
 inputsWrapper.addEventListener('click', function(event) {
@@ -149,6 +161,14 @@ document.querySelector('.show-btn-small-screen').addEventListener('click', (func
     }})()
 );
 
+function handleSortProds(prods) {
+    prods = handleSort(prods);
+    createPagination(containerPagination, prods.length);
+    showProducts(wrapperProducts, prods);
+
+    return prods;
+}
+
 function removeFromArr(el, arr) {
     return arr.filter(a => a !== el);
 }
@@ -230,16 +250,14 @@ function handleFilterProds(filter, prods, filterPrice) {
         prodFilterCategory.forEach(prod => res[prod.id] = prod );
         return res;
     }
-    console.log(sortPaginationObj.onPage);
     createPagination(containerPagination, prods.length);
 
     showProducts(wrapperProducts, res);
-
 }
 
 function handleSort(prods) {
     if(sortPaginationObj.sortProp) prods.sort( (a, b) => +sortPaginationObj.k * (+a[ sortPaginationObj.sortProp ] - +b[ sortPaginationObj.sortProp ]) );
-    //return sorted array of objects
+    //return sorted array of objects by price and rank
     return prods;
 }
 
