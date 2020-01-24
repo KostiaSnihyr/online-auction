@@ -15,6 +15,7 @@ const optionsPagination = selectPagination.querySelectorAll('option');
 let filterObj = { 'globalFilter': {} };
 let filterPrice = {};
 let sortPaginationObj = { sortProp: '', k: '', onPage: 2, curPage: 0 };
+let resultProds = [];
 
 for(let input of inputsPrice) {
     input.addEventListener('input', function() {
@@ -23,12 +24,12 @@ for(let input of inputsPrice) {
 
         if(!isNaN(price)) filterPrice[typeOfPrice] = price;
         else delete filterPrice[typeOfPrice];
-
-        handleFilterProds(filterObj, prods, filterPrice);
+        resultProds = handleFilterProds(filterObj, prods, filterPrice);
+        createPagination(containerPagination, resultProds.length);
     });
 }
-
-handleFilterProds(filterObj, prods, filterPrice);
+resultProds = handleFilterProds(filterObj, prods, filterPrice);
+// handleFilterProds(filterObj, prods, filterPrice);
 
 // <pagination
 containerPagination.addEventListener('click', function(e) {
@@ -40,6 +41,9 @@ containerPagination.addEventListener('click', function(e) {
         let oldActive = this.querySelector('.active');
         if(oldActive) oldActive.className = '';
         el.className = 'active';
+        
+
+        showProducts(wrapperProducts, resultProds);
     }
 });
 
@@ -47,7 +51,7 @@ selectPagination.addEventListener('change', function() {
     let prodOnPage = selectPagination[this.selectedIndex].value; //how many items on the page
     sortPaginationObj.onPage = prodOnPage;
 
-    handleFilterProds(filterObj, prods, filterPrice);
+    resultProds = handleFilterProds(filterObj, prods, filterPrice);
 });
 // </pagination
 
@@ -85,7 +89,7 @@ inputsWrapper.addEventListener('click', function(event) {
             } else {
                 filterObj['globalFilter'][groupFilter] = removeFromArr(nameFilter, filterObj['globalFilter'][groupFilter]);
             }
-            handleFilterProds(filterObj, prods, filterPrice);
+            resultProds = handleFilterProds(filterObj, prods, filterPrice);
         } else {
             // click input/label subfilter
             let dataFilter = clickEl.parentNode.parentNode.parentNode.parentNode.getAttribute('data-filter'); //sneakers /tshirts
@@ -98,7 +102,7 @@ inputsWrapper.addEventListener('click', function(event) {
                 filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
             }
         }
-        handleFilterProds(filterObj, prods, filterPrice);
+        resultProds = handleFilterProds(filterObj, prods, filterPrice);
     } else if(clickEl.classList.contains('global-filter')) {
         // li global filters
         let input = clickEl.querySelector('input');
@@ -113,7 +117,7 @@ inputsWrapper.addEventListener('click', function(event) {
         } else {
             filterObj['globalFilter'][groupFilter] = removeFromArr(nameFilter, filterObj['globalFilter'][groupFilter]);
         }
-        handleFilterProds(filterObj, prods, filterPrice);
+        resultProds = handleFilterProds(filterObj, prods, filterPrice);
     } else if(clickEl.classList.contains('submain-input')) {
     // click subcategory list
         let input = clickEl.querySelector('input');
@@ -137,7 +141,7 @@ inputsWrapper.addEventListener('click', function(event) {
             checkboxesToFalse(clickEl.querySelectorAll('div input'));
             delete filterObj[dataFilter];
         }
-        handleFilterProds(filterObj, prods, filterPrice);
+        resultProds = handleFilterProds(filterObj, prods, filterPrice);
     // close button
     } else if(clickEl.className === 'close-subfilter') {
         clickEl.parentNode.className = 'hide-filters';
@@ -250,9 +254,12 @@ function handleFilterProds(filter, prods, filterPrice) {
         prodFilterCategory.forEach(prod => res[prod.id] = prod );
         return res;
     }
+
     createPagination(containerPagination, prods.length);
 
     showProducts(wrapperProducts, res);
+
+    return res;
 }
 
 function handleSort(prods) {
@@ -303,7 +310,7 @@ function clickSubFilter(input, dataFilter, groupFilter, nameFilter) {
     } else {
         filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
     }
-    handleFilterProds(filterObj, prods, filterPrice);
+    resultProds = handleFilterProds(filterObj, prods, filterPrice);
 }
 
 function createPagination(container, qtyProds) {
