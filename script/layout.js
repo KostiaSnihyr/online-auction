@@ -6,30 +6,30 @@ const optionsSort = selectSort.querySelectorAll('option');
 
 const inputsPrice = inputsWrapper.querySelectorAll('.js-price');
 
-// <pagination
 const containerPagination = document.querySelector('.js-pagination');
 const selectPagination = document.querySelector('.js-select-pagination');
 const optionsPagination = selectPagination.querySelectorAll('option');
-// </pagination
 
 let filterObj = { 'globalFilter': {} };
 let filterPrice = {};
 let sortPaginationObj = { sortProp: '', k: '', onPage: 2, curPage: 0 };
 let resultProds = [];
 
+// <price
 for(let input of inputsPrice) {
     input.addEventListener('input', function() {
         let typeOfPrice = this.getAttribute('data-filter'); //min / max
         let price = parseFloat(this.value);
 
-        if(!isNaN(price)) filterPrice[typeOfPrice] = price;
+        if(!isNaN(price)) filterPrice[typeOfPrice] = price; 
         else delete filterPrice[typeOfPrice];
         resultProds = handleFilterProds(filterObj, prods, filterPrice);
-        createPagination(containerPagination, resultProds.length);
+        // createPagination(containerPagination, resultProds.length);
     });
 }
+// </price
+
 resultProds = handleFilterProds(filterObj, prods, filterPrice);
-// handleFilterProds(filterObj, prods, filterPrice);
 
 // <pagination
 containerPagination.addEventListener('click', function(e) {
@@ -42,7 +42,6 @@ containerPagination.addEventListener('click', function(e) {
         if(oldActive) oldActive.className = '';
         el.className = 'active';
         
-
         showProducts(wrapperProducts, resultProds);
     }
 });
@@ -50,6 +49,7 @@ containerPagination.addEventListener('click', function(e) {
 selectPagination.addEventListener('change', function() {
     let prodOnPage = selectPagination[this.selectedIndex].value; //how many items on the page
     sortPaginationObj.onPage = prodOnPage;
+    sortPaginationObj.curPage = 0;
 
     resultProds = handleFilterProds(filterObj, prods, filterPrice);
 });
@@ -59,8 +59,9 @@ selectSort.addEventListener('change', function() {
     let arrSelectValue = optionsSort[this.selectedIndex].value.split('_');
     sortPaginationObj.sortProp = arrSelectValue[0];
     sortPaginationObj.k = arrSelectValue[1];
+    sortPaginationObj.curPage = 0;
 
-    resultProds = handleFilterProds(filterObj, prods, filterPrice);
+    resultProds = handleSortProds(resultProds);
 });
 
 inputsWrapper.addEventListener('click', function(event) {
@@ -178,6 +179,16 @@ function removeFromArr(el, arr) {
 }
 
 function handleFilterProds(filter, prods, filterPrice) {
+    let arrProducts = handleFilters(filter, prods, filterPrice);
+    arrProducts = handleSort(arrProducts);
+
+    createPagination(containerPagination, arrProducts.length);
+    showProducts(wrapperProducts, arrProducts);
+
+    return arrProducts;
+}
+
+function handleFilters(filter, prods, filterPrice) {
     let res = {};
     let prodFilterCategory;
     let isFilterWork = false;
@@ -233,13 +244,10 @@ function handleFilterProds(filter, prods, filterPrice) {
     // </global filter
     
     // <order filter
-    let allResultProds = [];
-    for(let id in res) allResultProds.push(res[id]);
-    
-    handleSort(allResultProds);
+    prodFilterCategory = [];
+    for(let id in res) prodFilterCategory.push(res[id]);
 
-    res = allResultProds;
-    // </order filter
+    return prodFilterCategory;
 
     function subFilters(objSubFilters, prodFilterCategory, res) {
         for(let subFilterProp in objSubFilters) {
@@ -254,12 +262,6 @@ function handleFilterProds(filter, prods, filterPrice) {
         prodFilterCategory.forEach(prod => res[prod.id] = prod );
         return res;
     }
-
-    createPagination(containerPagination, prods.length);
-
-    showProducts(wrapperProducts, res);
-
-    return res;
 }
 
 function handleSort(prods) {
