@@ -1,20 +1,3 @@
-const inputsWrapper = document.querySelector('.filter-section__filters');
-const wrapperProducts = document.querySelector('.filter-section__produts');
-
-const selectSort = document.querySelector('.js-select-sort');
-const optionsSort = selectSort.querySelectorAll('option');
-
-const inputsPrice = inputsWrapper.querySelectorAll('.js-price');
-
-const containerPagination = document.querySelector('.js-pagination');
-const selectPagination = document.querySelector('.js-select-pagination');
-const optionsPagination = selectPagination.querySelectorAll('option');
-
-let filterObj = { 'globalFilter': {} };
-let filterPrice = {};
-let sortPaginationObj = { sortProp: '', k: '', onPage: 2, curPage: 0 };
-let resultProds = [];
-
 // <price
 for(let input of inputsPrice) {
     input.addEventListener('input', function() {
@@ -151,12 +134,6 @@ inputsWrapper.addEventListener('click', function(event) {
     }
 });
 
-function checkboxesToFalse(arrCheckboxes) {
-    for (let i = 0; i < arrCheckboxes.length; i++) {
-        arrCheckboxes[i].checked = false;
-    }
-}
-
 document.querySelector('.show-btn-small-screen').addEventListener('click', (function() {
     var isShowSideFilters = false;
     return function() {
@@ -167,142 +144,21 @@ document.querySelector('.show-btn-small-screen').addEventListener('click', (func
 );
 
 function handleSortProds(prods) {
-    prods = handleSort(prods);
+    prods = sortProducts(prods);
     createPagination(containerPagination, prods.length);
     showProducts(wrapperProducts, prods);
 
     return prods;
 }
 
-function removeFromArr(el, arr) {
-    return arr.filter(a => a !== el);
-}
-
 function handleFilterProds(filter, prods, filterPrice) {
-    let arrProducts = handleFilters(filter, prods, filterPrice);
-    arrProducts = handleSort(arrProducts);
+    let arrProducts = filterProducts(filter, prods, filterPrice);
+    arrProducts = sortProducts(arrProducts);
 
     createPagination(containerPagination, arrProducts.length);
     showProducts(wrapperProducts, arrProducts);
 
     return arrProducts;
-}
-
-function handleFilters(filter, prods, filterPrice) {
-    let res = {};
-    let prodFilterCategory;
-    let isFilterWork = false;
-
-    // filter by category
-    for(let categoryElement in filter) {
-        if(categoryElement !== 'globalFilter') {
-            isFilterWork = true;
-            prodFilterCategory = prods.filter(prod => {
-                return categoryElement === prod.category;
-            });
-    
-            // filter by subcategory
-            res = subFilters(filter[categoryElement], prodFilterCategory, res);
-        }
-    }
-
-    if(!isFilterWork) {
-        for(let prod of prods) {
-            res[prod.id] = prod;
-        }
-    }
-
-    // <price filter
-    for(let typePrice in filterPrice) {
-        const price = filterPrice[typePrice];
-        
-        let tempRes = {}; // save here filtered goods by price
-        if(typePrice === 'min') {
-            for(let id in res) {
-                if(res[id].price >= price) {
-                    tempRes[id] = res[id];
-                }
-            }
-        } else {
-            for(let id in res) {
-                if(res[id].price <= price) {
-                    tempRes[id] = res[id];
-                }
-            }
-        }
-
-        res = tempRes;
-    }
-    // </price filter
-
-    // <global filter
-    prodFilterCategory = [];
-    for(let prodId in res) {
-        prodFilterCategory.push( res[prodId] ); // res[prodId] - item
-    }
-    res = subFilters(filter['globalFilter'], prodFilterCategory, {});
-    // </global filter
-    
-    // <order filter
-    prodFilterCategory = [];
-    for(let id in res) prodFilterCategory.push(res[id]);
-
-    return prodFilterCategory;
-
-    function subFilters(objSubFilters, prodFilterCategory, res) {
-        for(let subFilterProp in objSubFilters) {
-            let arrSubFilters = objSubFilters[subFilterProp];
-            if(arrSubFilters.length !== 0) {
-                prodFilterCategory = prodFilterCategory.filter(prod => {
-                    return arrSubFilters.includes(prod[subFilterProp]);
-                })
-            }
-        }
-
-        prodFilterCategory.forEach(prod => res[prod.id] = prod );
-        return res;
-    }
-}
-
-function handleSort(prods) {
-    if(sortPaginationObj.sortProp) prods.sort( (a, b) => +sortPaginationObj.k * (+a[ sortPaginationObj.sortProp ] - +b[ sortPaginationObj.sortProp ]) );
-    //return sorted array of objects by price and rank
-    return prods;
-}
-
-function showProducts(containerProducts, prods) {
-    containerProducts.innerHTML = '';
-
-    const maxProduct = prods.length;
-    let maxOnCurPage = sortPaginationObj.onPage * (sortPaginationObj.curPage + 1);
-    maxOnCurPage = maxOnCurPage === 0 ? maxProduct : maxOnCurPage;
-
-    for(let i = sortPaginationObj.onPage * sortPaginationObj.curPage; i < maxProduct && i < maxOnCurPage; i++) {
-        containerProducts.appendChild(createProd( prods[i] ));
-    }
-}
-
-function createProd(prod) {
-    const prodWrapper = document.createElement('div');
-    const img = document.createElement('img');
-    const description = document.createElement('p');
-    const title = document.createElement('h3');
-
-    prodWrapper.className = 'product';
-    img.className = 'product-img';
-
-    img.setAttribute('src', prod.image);
-    description.innerText = `price: ${prod.price}, color: ${prod.color}`;
-    if('size' in prod) {
-        description.innerText += `, size ${prod.size}`;
-    }
-    title.innerText = prod.title;
-
-    prodWrapper.appendChild(img);
-    prodWrapper.appendChild(title);
-    prodWrapper.appendChild(description);
-
-    return prodWrapper;
 }
 
 function clickSubFilter(input, dataFilter, groupFilter, nameFilter) {
@@ -313,20 +169,4 @@ function clickSubFilter(input, dataFilter, groupFilter, nameFilter) {
         filterObj[dataFilter][groupFilter] = removeFromArr(nameFilter, filterObj[dataFilter][groupFilter]);
     }
     resultProds = handleFilterProds(filterObj, prods, filterPrice);
-}
-
-function createPagination(container, qtyProds) {
-    let link;
-    qtyProds = Math.ceil(qtyProds / sortPaginationObj.onPage); // how many pages
-    sortPaginationObj.curPage = 0;
-
-    container.innerHTML = '';
-    for(let i = 0; i < qtyProds; i++) {
-        link = document.createElement('button');
-        link.innerText = i + 1;
-        link.setAttribute('data-page', i);
-        if(i === 0) link.className = 'active';
-
-        container.appendChild(link);
-    }
 }
