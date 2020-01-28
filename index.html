@@ -4,12 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="styles/layout.css">
     <title>Online Auction</title>
 </head>
 <body>
+    
+    <header class="main-menu">
+        <div class="main-menu__container">
+            <nav>
+                <div class="main-menu__menu-icons">
+                    <i class="icon ion-md-menu"></i>
+                    <i class="icon ion-md-close"></i>
+                </div>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-camera"></i>
+                </a>
+                <ul class="main-menu__nav-list">
+                    <li>
+                        <a href="#">Dropdown Menu
+                            <i class="icon ion-md-arrow-dropdown"></i>
+                        </a>
+                        <ul class="main-menu__sub-menu first-sub-menu">
+                            <li>
+                                <a href="#">lvl-1</a>
+                            </li>
+                            <li>
+                                <a href="#">lvl-1
+                                    <i class="icon ion-md-arrow-dropdown"></i>
+                                </a>
+                                <ul class="main-menu__sub-menu">
+                                    <li>
+                                        <a href="#">lvl-2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">lvl-2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">lvl-2
+                                            <i class="icon ion-md-arrow-dropdown"></i>
+                                        </a>
+                                        <ul class="main-menu__sub-menu">
+                                            <li>
+                                                <a href="#">lvl-3</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">lvl-3</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">lvl-3</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">lvl-1</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#services" data-link="menu">Services</a>
+                    </li>
+                    <li>
+                        <a href="#about" data-link="menu">About</a>
+                    </li>
+                    <li>
+                        <a href="#advantages" data-link="menu">Advantages</a>
+                    </li>
+                    <li>
+                        <a href="#contacts" data-link="menu">Contacts</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="slider">
+        <div class="slider__gallery js-slider__gallery"></div>
+        <div class="slider__controls js-slider__controls"> </div>
+    </section>
+
     <section class="filter-section">
 
         <div class="filter-section__header">
@@ -173,9 +250,11 @@
     </section>
 
     <script src="script/temp.prods.js"></script>
+    <script src="script/main_menu.js"></script>
+    <script src="script/filter/slider.js"></script>
     <script src="script/utilities.js"></script>
-    <script src="script/vars.js"></script>
-    <script src="script/functions.js"></script>
-    <script src="script/main_handlers.js"></script>
+    <script src="script/filter/vars.js"></script>
+    <script src="script/filter/functions.js"></script>
+    <script src="script/filter/main_handlers.js"></script>
 </body>
 </html>

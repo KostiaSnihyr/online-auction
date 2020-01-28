@@ -131,5 +131,61 @@ var prods = [
         "image": "images/rBVaSVtDSJeAULLYAAHsEW3bJhw614.jpg",
         "title": "Prod 11",
         "gender": "male"
+    },
+    {
+        "id": "12",
+        "category": "bag",
+        "brand" : "adidas",
+        "color" : "green",
+        "price" : "17.99",
+        "occasion": "work",
+        "size": "medium",
+        "rank": "26",
+        "material": "hunter leather",
+        "image": "images/bag.png",
+        "title": "Prod 12",
+        "gender": "male"
+    },
+    {
+        "id": "13",
+        "category": "cap",
+        "brand" : "adidas",
+        "color" : "green",
+        "price" : "17.99",
+        "occasion": "work",
+        "size": "medium",
+        "rank": "26",
+        "material": "hunter leather",
+        "image": "images/cap.png",
+        "title": "Prod 13",
+        "gender": "male"
+    },
+    {
+        "id": "14",
+        "category": "sneakers",
+        "brand" : "adidas",
+        "color" : "green",
+        "price" : "17.99",
+        "occasion": "work",
+        "size": "medium",
+        "rank": "26",
+        "material": "hunter leather",
+        "image": "images/sneakers.png",
+        "title": "Prod 14",
+        "gender": "male"
+    },
+    {
+        "id": "15",
+        "category": "t-shirt",
+        "brand" : "adidas",
+        "color" : "green",
+        "price" : "17.99",
+        "occasion": "work",
+        "size": "medium",
+        "rank": "26",
+        "material": "hunter leather",
+        "image": "images/t-shirt.png",
+        "title": "Prod 15",
+        "gender": "male"
     }
 ];
