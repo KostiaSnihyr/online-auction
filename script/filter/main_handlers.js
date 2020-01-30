@@ -7,7 +7,6 @@ for(let input of inputsPrice) {
         if(!isNaN(price)) filterPrice[typeOfPrice] = price; 
         else delete filterPrice[typeOfPrice];
         resultProds = handleFilterProds(filterObj, prods, filterPrice);
-        // createPagination(containerPagination, resultProds.length);
     });
 }
 // </price
