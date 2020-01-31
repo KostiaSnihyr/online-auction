@@ -1,13 +1,12 @@
 function filterProducts(filter, prods, filterPrice) {
-    let res = {};
-    let prodFilterCategory;
-    let isFilterWork = false;
+    let res = {}, prodFilterCategory,
+        isFilterWork = false;
 
     // filter by category
     for(let categoryElement in filter) {
         if(categoryElement !== 'globalFilter') {
             isFilterWork = true;
-            prodFilterCategory = prods.filter(prod => {
+            prodFilterCategory = prods.filter(function (prod) {
                 return categoryElement === prod.category;
             });
     
@@ -17,8 +16,8 @@ function filterProducts(filter, prods, filterPrice) {
     }
 
     if(!isFilterWork) {
-        for(let prod of prods) {
-            res[prod.id] = prod;
+        for(let i = 0; i < prods.length; i++) {
+            res[prods[i].id] = prods[i];
         }
     }
 
@@ -62,47 +61,58 @@ function filterProducts(filter, prods, filterPrice) {
         for(let subFilterProp in objSubFilters) {
             let arrSubFilters = objSubFilters[subFilterProp];
             if(arrSubFilters.length !== 0) {
-                prodFilterCategory = prodFilterCategory.filter(prod => {
-                    return arrSubFilters.includes(prod[subFilterProp]);
-                })
+                prodFilterCategory = prodFilterCategory.filter(function (prod) {
+                    return includes(arrSubFilters, prod[subFilterProp]);
+                });
             }
         }
 
-        prodFilterCategory.forEach(prod => res[prod.id] = prod );
+        prodFilterCategory.forEach(function (prod) {
+            return res[prod.id] = prod;
+        });
         return res;
     }
 }
 
+function includes(arr, el) {
+    for (let i = 0; i < arr.length; i++) {
+        if(arr[i] === el) return true;
+    }
+    return false;
+}
+
 function sortProducts(prods) {
-    if(sortPaginationObj.sortProp) prods.sort( (a, b) => +sortPaginationObj.k * (+a[ sortPaginationObj.sortProp ] - +b[ sortPaginationObj.sortProp ]) );
-    //return sorted array of objects by price and rank
+    if (sortPaginationObj.sortProp) prods.sort(function (a, b) {
+        return +sortPaginationObj.k * (+a[sortPaginationObj.sortProp] - +b[sortPaginationObj.sortProp]);
+    });
+
     return prods;
 }
 
 function showProducts(containerProducts, prods) {
     containerProducts.innerHTML = '';
-
-    const maxProduct = prods.length;
+    
+    const qtyProds = prods.length;
     let maxOnCurPage = sortPaginationObj.onPage * (sortPaginationObj.curPage + 1);
-    maxOnCurPage = maxOnCurPage === 0 ? maxProduct : maxOnCurPage;
+    maxOnCurPage = maxOnCurPage === 0 ? qtyProds : maxOnCurPage;
 
-    for(let i = sortPaginationObj.onPage * sortPaginationObj.curPage; i < maxProduct && i < maxOnCurPage; i++) {
+    for(let i = sortPaginationObj.onPage * sortPaginationObj.curPage; i < qtyProds && i < maxOnCurPage; i++) {
         containerProducts.appendChild(createProd( prods[i] ));
     }
 }
 
 function createPagination(container, qtyProds) {
     let link;
-    qtyProds = Math.ceil(qtyProds / sortPaginationObj.onPage); // how many pages
+    qtyProds = Math.ceil(qtyProds / sortPaginationObj.onPage);
     sortPaginationObj.curPage = 0;
 
     container.innerHTML = '';
-    for(let i = 0; i < qtyProds; i++) {
+    for (let i = 0; i < qtyProds; i++) {
         link = document.createElement('button');
         link.innerText = i + 1;
         link.setAttribute('data-page', i);
         if(i === 0) link.className = 'active';
-
+     
         container.appendChild(link);
     }
 }

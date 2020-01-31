@@ -5,7 +5,11 @@ function checkboxesToFalse(arrCheckboxes) {
 }
 
 function removeFromArr(el, arr) {
-    return arr.filter(a => a !== el);
+    if(arr) {
+        return arr.filter(function (a) {
+            return a !== el;
+        });
+    }
 }
 
 function createProd(prod) {
@@ -18,9 +22,9 @@ function createProd(prod) {
     img.className = 'product-img';
 
     img.setAttribute('src', prod.image);
-    description.innerText = `price: ${prod.price}, color: ${prod.color}`;
-    if('size' in prod) {
-        description.innerText += `, size ${prod.size}`;
+    description.innerHTML = "price: ".concat(prod.price, " <br> color: ").concat(prod.color, " <br> rank: ").concat(prod.rank);
+    if ('size' in prod) {
+       description.innerHTML += " <br> size ".concat(prod.size);
     }
     title.innerText = prod.title;
 

@@ -4,7 +4,8 @@
           controls = document.querySelector('.js-slider__controls');
     let slide;
 
-    for (let prod of prods) {
+    for (let i = 0; i < prods.length; i++) {
+        const prod = prods[i];
         if(prod.image.indexOf('.png') !== -1) {
             slide = createSlide(prod, slides.length === 0);
             slides.push( slide );
@@ -53,9 +54,9 @@
         img.setAttribute('alt', 'slide image');
         link.setAttribute('href', 'product.html?id=' + prod.id);
 
-        description.innerHTML = `price: ${prod.price} <br> color: ${prod.color} <br> rank: ${prod.rank}`;
+        description.innerHTML = 'price: ' + prod.price + '<br>' + 'color: ' + prod.color + '<br>' + 'rank: ' + prod.rank;
         if('size' in prod) {
-            description.innerHTML += ` <br> size ${prod.size}`;
+            description.innerHTML += ' <br> size ' + prod.size;
         }
         title.innerText = prod.title;
         link.innerText = 'сделать ставку';

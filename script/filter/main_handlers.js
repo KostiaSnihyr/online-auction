@@ -1,11 +1,12 @@
 // <price
-for(let input of inputsPrice) {
-    input.addEventListener('input', function() {
-        let typeOfPrice = this.getAttribute('data-filter'); //min / max
+for(let i = 0; i < inputsPrice.length; i++) {
+    inputsPrice[i].addEventListener('input', function() {
+        let typeOfPrice = this.getAttribute('data-filter'); // min / max
         let price = parseFloat(this.value);
 
-        if(!isNaN(price)) filterPrice[typeOfPrice] = price; 
+        if(!isNaN(price)) filterPrice[ typeOfPrice ] = price;
         else delete filterPrice[typeOfPrice];
+
         resultProds = handleFilterProds(filterObj, prods, filterPrice);
     });
 }
