@@ -12,5 +12,5 @@ const optionsPagination = selectPagination.querySelectorAll('option');
 
 let filterObj = { 'globalFilter': {} };
 let filterPrice = {};
-let sortPaginationObj = { sortProp: '', k: '', onPage: 2, curPage: 0 };
+let sortPaginationObj = { sortProp: '', k: '', onPage: 10, curPage: 0 };
 let resultProds = [];

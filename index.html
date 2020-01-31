@@ -101,9 +101,9 @@
             <h6>items on the page:</h6>
             <select class="items-on-the-page-select js-select-pagination" name="items-number">
                 <option value="" disabled>choose prod on page:</option>
-                <option value="2" selected>2</option>
                 <option value="5">5</option>
-                <option value="10">10</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
             </select>
 
 
@@ -241,9 +241,12 @@
 
             <!-- ___________________________________________________________________________________________ -->
 
-            <div class="filter-section__produts" style="background: rgb(88, 88, 218); align-content: flex-start;"></div>
-
-            <div class="pagination js-pagination"></div>
+            <div class="filter-pagination-wrap">
+                <div class="filter-section__produts"></div>
+                <div class="pagination">
+                    <div class="js-pagination"></div>
+                </div>
+            </div>
 
         </div>
 
