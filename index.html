@@ -7,7 +7,9 @@
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
-    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/index.css">
     <title>Online Auction</title>
 </head>
 <body>
@@ -20,7 +22,7 @@
                     <i class="icon ion-md-close"></i>
                 </div>
                 <a href="index.html" class="logo">
-                    <i class="fas fa-camera"></i>
+                    <i class="fas fa-gavel"></i>
                 </a>
                 <ul class="main-menu__nav-list">
                     <li>
@@ -66,16 +68,16 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#services" data-link="menu">Services</a>
+                        <a href="index.html#lots" data-link="menu">Lots</a>
                     </li>
                     <li>
-                        <a href="#about" data-link="menu">About</a>
+                        <a href="add.html" data-link="menu">Add lot</a>
                     </li>
                     <li>
-                        <a href="#advantages" data-link="menu">Advantages</a>
+                        <a href="registration.html" data-link="menu">Registration</a>
                     </li>
                     <li>
-                        <a href="#contacts" data-link="menu">Contacts</a>
+                        <a href="index.html#contacts" data-link="menu">Contacts</a>
                     </li>
                 </ul>
             </nav>
@@ -83,11 +85,12 @@
     </header>
 
     <section class="slider">
+        <h2 hidden>Slider</h2>
         <div class="slider__gallery js-slider__gallery"></div>
         <div class="slider__controls js-slider__controls"> </div>
     </section>
 
-    <section class="filter-section">
+    <section id="lots" class="filter-section">
 
         <div class="filter-section__header">
             <button class="show-btn-small-screen">filters <i class="fas fa-filter"></i></button>
@@ -251,6 +254,21 @@
         </div>
 
     </section>
+
+
+    <footer>
+        <div id="contacts" class="contacts">
+            <div class="contacts__desc">
+                <div>
+                    <p>Hrechatik st, 105</p>
+                    <p>office 105</p>
+                    <p>+380 99 123 98 45</p>
+                    <p>offem@gmail.com</p>
+                </div>
+            </div>
+            <div class="contacts__map"></div>
+        </div>        
+    </footer>
 
     <script src="script/temp.prods.js"></script>
     <script src="script/main_menu.js"></script>
