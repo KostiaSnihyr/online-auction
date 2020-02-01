@@ -1,0 +1,39 @@
+
+.wrapper-registration {
+    margin: 10px auto 0;
+    width: 90%;
+}
+.wrapper-registration > h2 {
+    text-align: center;
+}
+.wrapper-registration > form {
+    margin: 50px auto 0;
+    display: block;
+    width: 300px;
+}
+
+.wrapper-registration input,
+.wrapper-registration button {
+    margin-bottom: 30px;
+    display: block;
+    width: 100%;
+    height: 50px;
+    outline: none;
+    border: none;
+    color: #000000;
+    padding: 5px;
+    border-bottom: 1px solid currentColor;
+    border-radius: 3px;
+    background-color: transparent;
+    box-sizing: border-box;
+    transition: .3s;
+}
+.wrapper-registration button {
+    border: 1px solid currentColor;
+    cursor: pointer;
+}
+.wrapper-registration button:focus,
+.wrapper-registration button:hover {
+    color: #eeeeee;
+    background-color: #000000;
+}
