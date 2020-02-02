@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/add.css">
+    <link rel="stylesheet" href="styles/form.css">
     <title>Add Lot</title>
 </head>
 <body>
@@ -84,7 +84,43 @@
         </div>
     </header>
 
-    
+    <section class="wrapper-form">
+        <h2>ADD LOT</h2>
+        <form class="js-form">
+            <div>
+                <input type="text" name="title" placeholder="Lot title" required autofocus>
+                <select name="category" class="js-category" required>
+                    <option value="" disabled selected>Choose category</option>
+                    <option value="sneakers">sneakers</option>
+                    <option value="t-shirts">t-shirts</option>
+                    <option value="caps">caps</option>
+                    <option value="bags">bags</option>
+                    sneakers
+                </select>
+                <div class="js-sub_selects"></div>
+
+                <select name="color" required>
+                    <option value="Lot color" disabled selected>Lot color</option>
+                    <option value="red">red</option>
+                    <option value="black">black</option>
+                    <option value="green">green</option>
+                    <option value="blue">blue</option>
+                    <option value="white">white</option>
+                </select>
+                <select name="gender" required>
+                    <option value="Lot gender" disabled selected>Lot gender</option>
+                    <option value="male">male</option>
+                    <option value="female">female</option>
+                </select>
+
+                <input type="text" name="price" placeholder="Lot price" required>
+                <input type="text" name="image" placeholder="Lot image" required>
+                <input type="text" name="rank" placeholder="Lot rank" required>
+            </div>
+            <button>add lot</button>
+        </form>
+
+    </section>
 
     <script src="script/main_menu.js"></script>
     <script src="script/localStorage.js"></script>
