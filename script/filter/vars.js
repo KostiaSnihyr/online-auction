@@ -10,6 +10,8 @@ const containerPagination = document.querySelector('.js-pagination');
 const selectPagination = document.querySelector('.js-select-pagination');
 const optionsPagination = selectPagination.querySelectorAll('option');
 
+const searchProd = document.querySelector('.js-search');
+
 let filterObj = { 'globalFilter': {} };
 let filterPrice = {};
 let sortPaginationObj = { sortProp: '', k: '', onPage: 10, curPage: 0 };

@@ -14,6 +14,10 @@ for(let i = 0; i < inputsPrice.length; i++) {
 
 resultProds = handleFilterProds(filterObj, prods, filterPrice);
 
+searchProd.addEventListener('input', function(e) {
+    showProducts(wrapperProducts, resultProds.filter(prod => prod.title.toLowerCase().indexOf(this.value.toLowerCase()) !== -1));
+})
+
 // <pagination
 containerPagination.addEventListener('click', function(e) {
     const el = e.target;
