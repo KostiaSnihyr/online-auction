@@ -14,7 +14,7 @@ const searchProd = document.querySelector('.js-search');
 
 let filterObj = { 'globalFilter': {} };
 let filterPrice = {};
-let filterSearch = '';
+let filterSearch = ''; //global variable for input search products
 let sortPaginationObj = { sortProp: '', k: '', onPage: 10, curPage: 0 };
 
 let resultProds = [];
