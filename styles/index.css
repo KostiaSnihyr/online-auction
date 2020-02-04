@@ -17,9 +17,13 @@ li {
 
 h6 {
     color: #fff;
-    background-color: rgb(46, 53, 41);
+    background-color: rgb(0, 0, 0);
     padding: 10px;
     font-size: 1.5rem;
+}
+
+.subfilter-header {
+    color: rgb(6, 12, 4);
 }
 
 /* filter header */
