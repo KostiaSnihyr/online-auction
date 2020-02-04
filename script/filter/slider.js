@@ -59,7 +59,7 @@
             description.innerHTML += ' <br> size ' + prod.size;
         }
         title.innerText = prod.title;
-        link.innerText = 'сделать ставку';
+        link.innerText = 'make a bid';
 
         content.appendChild(title);
         content.appendChild(description);

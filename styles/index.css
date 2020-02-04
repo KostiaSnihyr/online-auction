@@ -17,8 +17,9 @@ li {
 
 h6 {
     color: #fff;
-    background-color: #000;
+    background-color: rgb(46, 53, 41);
     padding: 10px;
+    font-size: 1.5rem;
 }
 
 /* filter header */
@@ -206,13 +207,13 @@ h6 {
     background-color: transparent;
 }
 .pagination .active {
-    color: #ff00ff;
-    box-shadow: 0 0 5px #f0f;
+    color: #000000;
+    box-shadow: 0 0 5px rgb(255, 0, 0);
 }
 
 /* <slider */
 .slider {
-    background-color: #ffaaff55;
+    background-color: #aaffca55;
 }
 
 .slider__controls {
@@ -362,7 +363,7 @@ h6 {
 .contacts__map {
     width: 50%;
     height: 100%;
-    background-color: #ffff00;
+    background-color: #fff;
 }
 .contacts__map > iframe {
     width: 100%;
