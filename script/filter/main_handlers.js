@@ -16,7 +16,10 @@ prods = storage.loadProds(prods);
 resultProds = handleFilterProds(filterObj, prods, filterPrice);
 
 searchProd.addEventListener('input', function(e) {
-    showProducts(wrapperProducts, resultProds.filter(prod => prod.title.toLowerCase().indexOf(this.value.toLowerCase()) !== -1));
+    filterSearch = this.value.toLowerCase();
+    let tmpProds = resultProds.filter(prod => prod.title.toLowerCase().indexOf(filterSearch) !== -1);
+    showProducts(wrapperProducts, tmpProds);
+    createPagination(containerPagination, tmpProds.length);
 });
 
 // <pagination
@@ -30,7 +33,11 @@ containerPagination.addEventListener('click', function(e) {
         if(oldActive) oldActive.className = '';
         el.className = 'active';
         
-        showProducts(wrapperProducts, resultProds);
+        let tmpProds = resultProds;
+        if(filterSearch !== '') {
+            tmpProds = tmpProds.filter(prod => prod.title.toLowerCase().indexOf(filterSearch) !== -1);
+        }
+        showProducts(wrapperProducts, tmpProds);
     }
 });
 
@@ -49,12 +56,15 @@ selectSort.addEventListener('change', function() {
     sortPaginationObj.k = arrSelectValue[1];
     sortPaginationObj.curPage = 0;
 
+
     resultProds = handleSortProds(resultProds);
 });
 
 inputsWrapper.addEventListener('click', function(event) {
     const clickEl = event.target;
     if(clickEl.tagName === "INPUT" && clickEl.type === 'checkbox') {
+        searchProd.value = '';
+        filterSearch = '';
         if(clickEl.className === 'main__input') {
             let dataFilter = clickEl.parentNode.getAttribute('data-filter');
             let div = clickEl.parentNode.querySelector('div');
@@ -94,6 +104,8 @@ inputsWrapper.addEventListener('click', function(event) {
         resultProds = handleFilterProds(filterObj, prods, filterPrice);
     } else if(clickEl.classList.contains('global-filter')) {
         // li global filters
+        searchProd.value = '';
+        filterSearch = '';
         let input = clickEl.querySelector('input');
         let nameFilter = input.getAttribute('data-filter'); //red / male
         let groupFilter = clickEl.parentNode.getAttribute('data-group'); // colors / gender
@@ -109,6 +121,8 @@ inputsWrapper.addEventListener('click', function(event) {
         resultProds = handleFilterProds(filterObj, prods, filterPrice);
     } else if(clickEl.classList.contains('submain-input')) {
     // click subcategory list
+        searchProd.value = '';
+        filterSearch = '';
         let input = clickEl.querySelector('input');
             input.checked = !input.checked;
 
@@ -119,6 +133,8 @@ inputsWrapper.addEventListener('click', function(event) {
 
         clickSubFilter(input, dataFilter, groupFilter, nameFilter);
     } else if(clickEl.className === 'category__list') {
+        searchProd.value = '';
+        filterSearch = '';
         let dataFilter = clickEl.getAttribute('data-filter');
         const checkbox = clickEl.querySelector('input');
         checkbox.checked = !checkbox.checked;
@@ -150,6 +166,10 @@ document.querySelector('.show-btn-small-screen').addEventListener('click', (func
 
 function handleSortProds(prods) {
     prods = sortProducts(prods);
+    if(filterSearch !== '') {
+        prods = prods.filter(prod => prod.title.toLowerCase().indexOf(filterSearch) !== -1);
+    }
+
     createPagination(containerPagination, prods.length);
     showProducts(wrapperProducts, prods);
 
@@ -159,6 +179,9 @@ function handleSortProds(prods) {
 function handleFilterProds(filter, prods, filterPrice) {
     let arrProducts = filterProducts(filter, prods, filterPrice);
     arrProducts = sortProducts(arrProducts);
+    if(filterSearch !== '') {
+        arrProducts = arrProducts.filter(prod => prod.title.toLowerCase().indexOf(filterSearch) !== -1);
+    }
 
     createPagination(containerPagination, arrProducts.length);
     showProducts(wrapperProducts, arrProducts);
