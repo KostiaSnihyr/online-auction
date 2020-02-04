@@ -6,7 +6,7 @@
 
     for (let i = 0; i < prods.length; i++) {
         const prod = prods[i];
-        if(prod.image.indexOf('.png') !== -1) {
+        if(prod.image.indexOf('.png ') !== -1) {
             slide = createSlide(prod, slides.length === 0);
             slides.push( slide );
             slidesGalery.appendChild( slide );

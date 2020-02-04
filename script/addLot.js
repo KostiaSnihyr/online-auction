@@ -24,6 +24,12 @@ const options = {
     }
 };
 
+prods = storage.loadProds( prods );
+
+if(storage.getUser() === null) {
+    alert('You have to be login!');
+    location.href = 'registration.html';
+}
 
 selectCategory.addEventListener('change', function(e) {
     const category = optionsCategory[this.selectedIndex].value;
@@ -35,31 +41,40 @@ form.addEventListener('submit', function(e) {
 
     const arrSelects = this.querySelectorAll('select'),
           arrInputs = this.querySelectorAll('input');
-    let res = [],
-        options;
+    let res = [], options;
 
     for (let i = 0; i < arrInputs.length; i++) {
         res.push({
             value: arrInputs[i].value,
             name: arrInputs[i].getAttribute('name')
-        })
+        });
     }
 
-    for(let i = 0; i < arrSelects.length; i++) {
+    for (let i = 0; i < arrSelects.length; i++) {
         options = arrSelects[i].querySelectorAll('option');
         res.push({
             value: options[arrSelects[i].selectedIndex].value,
             name: arrSelects[i].getAttribute('name')
-        })
+        });
     }
+    
+    let prodObj = {};
+    for(let i = 0; i < res.length; i++) {
+        prodObj[ res[i].name ] = res[i].value;
+    }
+    prodObj.id = prods.length + 1;
+    prodObj.user = storage.getUser();
 
-    console.log(res);
+    storage.addProd( prodObj );
+    prods.push( prodObj );
+
+    alert('Prod added!');
+    location.href = location.href;
 });
-
 
 function createSubFilters(container, objSelects) {
     container.innerHTML = '';
-    for(let name in objSelects) { // name => brand/size
+    for(let name in objSelects) {
         container.appendChild( createSelect(name, objSelects[name]) );
     }
 }

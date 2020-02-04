@@ -12,11 +12,12 @@ for(let i = 0; i < inputsPrice.length; i++) {
 }
 // </price
 
+prods = storage.loadProds(prods);
 resultProds = handleFilterProds(filterObj, prods, filterPrice);
 
 searchProd.addEventListener('input', function(e) {
     showProducts(wrapperProducts, resultProds.filter(prod => prod.title.toLowerCase().indexOf(this.value.toLowerCase()) !== -1));
-})
+});
 
 // <pagination
 containerPagination.addEventListener('click', function(e) {
